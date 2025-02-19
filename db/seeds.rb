@@ -13,3 +13,10 @@ Poster.create(name: "REGRET",
               year: 2018,
               vintage: true,
               img_url:  "https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d")
+              
+Poster.create(name: "SADNESS",
+              description: "This program is sabotaging me",
+              price: 100.00,
+              year: 2010,
+              vintage: false,
+              img_url: "https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d")
