@@ -1,7 +1,8 @@
 class PosterSerializer
   def self.format_posters(posters)
+    { data:
     posters.map do |poster|
-      { data: {
+      {
         id: poster.id,
         type: "poster",
         attributes: {
@@ -13,8 +14,11 @@ class PosterSerializer
           img_url: poster.img_url
         }
       }
+    end,
+    meta: {
+      count: posters.count
+      }
     }
-    end
   end
 
   def self.format_single(poster)
