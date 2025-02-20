@@ -67,6 +67,34 @@ RSpec.describe "Posters endpoints" do
     expect(poster_response[:data][:attributes][:img_url]).to eq(poster_params[:img_url])
   end
 
+  it "can update posters" do
+    Poster.create!(name: 'YOU GOT THIS', description: 'We are learning!', price: 100.50, year: 2025, img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d')
+
+    get "/api/v1/posters"
+
+    posters = JSON.parse(response.body, symbolize_names: true)
+    first_id = posters[:data].first[:id]
+
+    expect(posters[:data].first[:attributes][:name]).to eq('YOU GOT THIS')
+    expect(posters[:data].first[:id]).to eq(first_id)
+
+    updates = {
+      poster: { 
+        name: "EVEN THOUGH ITS NOT EASY",
+        description: "We are still learning!"
+      }
+    }
+
+    patch "/api/v1/posters/#{first_id}", params: updates
+
+    get "/api/v1/posters"
+
+    updated_posters = JSON.parse(response.body, symbolize_names: true)
+
+    expect(updated_posters[:data].first[:attributes][:name]).to eq('EVEN THOUGH ITS NOT EASY')
+    expect(updated_posters[:data].first[:id]).to eq(first_id)
+  end
+
   it "can delete posters" do
     Poster.create!(name: 'YOU GOT THIS', description: 'We are learning!', price: 100.50, year: 2025, img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d')
     Poster.create!(name: 'WE ARE HEROES', description: 'Defeat the evil code we do not understand!', price: 75.50, year: 2024, img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d')
