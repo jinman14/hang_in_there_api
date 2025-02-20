@@ -1,6 +1,17 @@
 class Api::V1::PostersController < ApplicationController
   def index
-    posters = Poster.all
+    if params[:sort] == "asc"
+      posters = Poster.sort_by_asc
+    elsif params[:sort] == "desc"
+      posters = Poster.sort_by_desc
+    else 
+      posters = Poster.all
+    end
+    if params[:name].present?
+      posters = posters.name_contains(params[:name])
+      binding.pry
+    end
+
     render json: PosterSerializer.format_posters(posters)
   end
 
@@ -11,13 +22,11 @@ class Api::V1::PostersController < ApplicationController
 
   def create
     new_poster = Poster.create(poster_params)
-
     render json: PosterSerializer.format_single(new_poster)
   end
 
   def update
     updated_poster = Poster.update(params[:id], poster_params)
-
     render json: PosterSerializer.format_single(updated_poster)
   end
 
