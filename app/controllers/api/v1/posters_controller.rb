@@ -7,6 +7,7 @@ class Api::V1::PostersController < ApplicationController
     else 
       posters = Poster.all
     end
+    
     if params[:name].present?
       posters = posters.name_contains(params[:name])
       binding.pry
