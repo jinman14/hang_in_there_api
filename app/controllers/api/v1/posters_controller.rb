@@ -12,6 +12,14 @@ class Api::V1::PostersController < ApplicationController
       posters = posters.name_contains(params[:name])
     end
 
+    if params[:min_price].present?
+      posters = posters.min_price(params[:min_price])
+    end
+
+    if params[:max_price].present?
+      posters = posters.max_price(params[:max_price])
+    end
+
     render json: PosterSerializer.format_posters(posters)
   end
 
