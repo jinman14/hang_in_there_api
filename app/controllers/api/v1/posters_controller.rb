@@ -7,10 +7,9 @@ class Api::V1::PostersController < ApplicationController
     else 
       posters = Poster.all
     end
-    
+
     if params[:name].present?
       posters = posters.name_contains(params[:name])
-      binding.pry
     end
 
     render json: PosterSerializer.format_posters(posters)
@@ -32,7 +31,11 @@ class Api::V1::PostersController < ApplicationController
   end
 
   def destroy
-    render json: Poster.delete(params[:id])
+    marked_poster = Poster.find_by(id: params[:id])
+
+    if marked_poster
+      marked_poster.destroy
+    end
   end
 
   private
