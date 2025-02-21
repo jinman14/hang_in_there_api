@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "Posters endpoints" do
   it "can send a list of all posters" do
-    Poster.create!(name: 'YOU GOT THIS', description: 'We are learning!', price: 100.50, year: 2025, img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d')
-    Poster.create!(name: 'WE ARE HEROES', description: 'Defeat the evil code we do not understand!', price: 75.50, year: 2024, img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d')
-    Poster.create!(name: 'OR MAYBE NOT, IDK', description: 'But still dont lose hope!', price: 50.50, year: 2023, img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d')
+    Poster.create!(name: 'YOU GOT THIS', description: 'We are learning!', price: 100.50, year: 2025, vintage: true, img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d')
+    Poster.create!(name: 'WE ARE HEROES', description: 'Defeat the evil code we do not understand!', price: 75.50, year: 2024, vintage: false, img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d')
+    Poster.create!(name: 'OR MAYBE NOT, IDK', description: 'But still dont lose hope!', price: 50.50, year: 2023, vintage: true, img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d')
 
     get "/api/v1/posters"
 
@@ -41,6 +41,9 @@ RSpec.describe "Posters endpoints" do
 
     expect(poster_response[:data][:attributes]).to have_key(:year)
     expect(poster_response[:data][:attributes][:year]).to eq(poster_1.year)
+
+    expect(poster_response[:data][:attributes]).to have_key(:vintage)
+    expect(poster_response[:data][:attributes][:vintage]).to eq(poster_1.vintage)
 
     expect(poster_response[:data][:attributes]).to have_key(:img_url)
     expect(poster_response[:data][:attributes][:img_url]).to eq(poster_1.img_url)
@@ -116,4 +119,18 @@ RSpec.describe "Posters endpoints" do
 
     expect(posters[:data].count).to eq(2)
   end
+
+  it "can check the meta data count" do
+    Poster.create!(name: 'YOU GOT THIS', description: 'We are learning!', price: 100.50, year: 2025, vintage: true, img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d')
+    Poster.create!(name: 'WE ARE HEROES', description: 'Defeat the evil code we do not understand!', price: 75.50, year: 2024, vintage: false, img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d')
+    Poster.create!(name: 'OR MAYBE NOT, IDK', description: 'But still dont lose hope!', price: 50.50, year: 2023, vintage: true, img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d')
+
+    get "/api/v1/posters"
+    
+    posters = JSON.parse(response.body, symbolize_names: true)
+
+    expect(posters[:meta][:count]).to eq(3)
+  end
+
+  it ""
 end
