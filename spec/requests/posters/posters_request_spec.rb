@@ -38,13 +38,16 @@ RSpec.describe "Posters endpoints" do
       expect(poster[:attributes]).to have_key(:year)
       expect(poster[:attributes][:year]).to be_a(Integer)
 
+      expect(poster[:attributes]).to have_key(:vintage)
+      expect(poster[:attributes][:vintage]).to be_in([true, false])
+
       expect(poster[:attributes]).to have_key(:img_url)
       expect(poster[:attributes][:img_url]).to be_a(String)
     end
   end
 
   it "can return one poster" do
-    poster_1 = Poster.create!(name: 'YOU GOT THIS', description: 'We are learning!', price: 100.50, year: 2025, img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d')
+    poster_1 = Poster.create!(name: 'YOU GOT THIS', description: 'We are learning!', price: 100.50, year: 2025, vintage: true, img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d')
 
     get "/api/v1/posters/#{poster_1.id}"
 
@@ -81,6 +84,7 @@ RSpec.describe "Posters endpoints" do
       description: 'A mighty little poster',
       price: 29.99,
       year: 2026,
+      vintage: false,
       img_url: 'https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d'
     }
     post "/api/v1/posters", params: { poster: poster_params }
@@ -92,6 +96,7 @@ RSpec.describe "Posters endpoints" do
     expect(poster_response[:data][:attributes][:description]).to eq(poster_params[:description])
     expect(poster_response[:data][:attributes][:price]).to eq(poster_params[:price])
     expect(poster_response[:data][:attributes][:year]).to eq(poster_params[:year])
+    expect(poster_response[:data][:attributes][:vintage]).to eq(poster_params[:vintage])
     expect(poster_response[:data][:attributes][:img_url]).to eq(poster_params[:img_url])
   end
 
