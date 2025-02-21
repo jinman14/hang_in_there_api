@@ -155,4 +155,16 @@ RSpec.describe "Posters endpoints" do
 
     expect(posters[:data].first[:attributes][:name]).to eq('OR MAYBE NOT, IDK')
   end
+
+  it "can filter by name parameter" do
+    
+  end
+
+  it "can filter by min price" do
+    
+  end
+
+  it "can filter by max price" do
+    
+  end
 end
