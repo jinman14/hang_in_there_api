@@ -17,7 +17,7 @@ RSpec.describe "Posters endpoints" do
 
     expect(posters[:data].count).to eq(3)
     
-     expect(response).to be_successful
+    expect(response).to be_successful
 
     poster_response = JSON.parse(response.body, symbolize_names: true)
     expect(poster_response[:data].count).to eq(3)
