@@ -10,4 +10,12 @@ class Poster < ApplicationRecord
   def self.name_contains(query)
     where("name ILIKE ?", "%#{query}%")
   end
+
+  def self.min_price(query)
+    where("price >= #{query}")
+  end
+  
+  def self.max_price(query)
+    where("price <= #{query}")
+  end
 end
